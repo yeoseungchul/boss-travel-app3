@@ -7,7 +7,14 @@
     "dev:turbo": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run lint && npm run typecheck && npm run build",
+    "test": "npm run check",
+    "clean": "node scripts/clean.mjs",
+    "clean:deps": "node scripts/clean.mjs --deps",
+    "clean:cache": "node scripts/clean-cache.mjs",
+    "deploy:prod:win": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/deploy-prod.ps1"
   },
   "dependencies": {
     "@supabase/ssr": "^0.10.2",

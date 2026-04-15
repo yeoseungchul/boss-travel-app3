@@ -29,7 +29,14 @@ function Spinner() {
   );
 }
 
-export function InquiryForm({ preselectedProductId = "" }: { preselectedProductId?: string }) {
+export function InquiryForm({
+  preselectedProductId = "",
+  prefillDepositIntent = false,
+}: {
+  preselectedProductId?: string;
+  prefillDepositIntent?: boolean;
+}) {
+  void prefillDepositIntent;
   const t = useTranslations("Inquiry");
   const tProducts = useTranslations("Products");
   const localeFromIntl = useLocale();
