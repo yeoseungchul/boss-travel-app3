@@ -21,7 +21,6 @@ export default async function HomePage({ params }: Props) {
   setRequestLocale(locale);
 
   const tHome = await getTranslations("Home");
-  const tProducts = await getTranslations("Products");
   const appLocale = await getLocale();
   
   const supabase = await createClient();
@@ -34,8 +33,8 @@ export default async function HomePage({ params }: Props) {
 
   const destinationCatalog = products.map((p) => ({
     id: p.id,
-    label: tProducts(`${p.id}.name`) || p.title,
-    src: p.youtube_url, 
+    label: p.title || "Travel Destination",
+    src: p.youtube_url || "", 
     tint: "bg-blue-900/40",
   }));
 
@@ -43,7 +42,7 @@ export default async function HomePage({ params }: Props) {
     id: p.id,
     messageKey: p.id,
     formattedPrice: formatKRW(p.price_krw || 0, appLocale),
-    durationDays: p.duration_days,
+    durationDays: p.duration_days || 0,
     heroImage: "/images/hero-default.jpg",
   }));
 
