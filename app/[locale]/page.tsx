@@ -9,7 +9,9 @@ import { HomeYoutubeStrip } from "@/components/home/HomeYoutubeStrip";
 import { HomeSosBar } from "@/components/HomeSosBar";
 import { HomeShortFormReels } from "@/components/home/HomeShortFormReels";
 import { defaultShortFormReelsFromProducts } from "@/lib/short-form-clips";
-import { PRODUCTS, formatKRW } from "@/lib/products";
+import { formatKRW } from "@/lib/products";
+// [추가] Supabase를 불러오기 위해 아래 한 줄을 추가합니다.
+import { createClient } from "@/utils/supabase/server";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -22,20 +24,30 @@ export default async function HomePage({ params }: Props) {
   const tHome = await getTranslations("Home");
   const tProducts = await getTranslations("Products");
   const appLocale = await getLocale();
+  
+  // [수정] 이제 가짜 데이터(PRODUCTS) 대신 Supabase 금고를 직접 엽니다!
+  const supabase = await createClient();
+  const { data: dbProducts } = await supabase
+    .from('products')
+    .select('*')
+    .order('created_at', { ascending: true });
 
-  const destinationCatalog = PRODUCTS.map((p) => ({
+  const products = dbProducts || [];
+
+  // [수정] p.videoSrc 대신 Supabase의 youtube_url을 사용합니다.
+  const destinationCatalog = products.map((p) => ({
     id: p.id,
-    label: tProducts(`${p.messageKey}.name`),
-    src: p.videoSrc,
-    tint: p.videoTint,
+    label: tProducts(`${p.id}.name`) || p.title, // 다국어 설정이 없으면 기본 제목 사용
+    src: p.youtube_url, // 드디어 유튜브 주소가 연결됩니다!
+    tint: "bg-blue-900/40",
   }));
 
-  const showcaseItems = PRODUCTS.map((p) => ({
+  const showcaseItems = products.map((p) => ({
     id: p.id,
-    messageKey: p.messageKey,
-    formattedPrice: formatKRW(p.priceKRW, appLocale),
-    durationDays: p.durationDays,
-    heroImage: p.heroImage,
+    messageKey: p.id,
+    formattedPrice: formatKRW(p.price_krw || 0, appLocale),
+    durationDays: p.duration_days,
+    heroImage: "/images/hero-default.jpg", // 기본 이미지 설정
   }));
 
   const reelClips = defaultShortFormReelsFromProducts((krw) => formatKRW(krw, appLocale));
@@ -43,20 +55,14 @@ export default async function HomePage({ params }: Props) {
   return (
     <main className="flex flex-col gap-10 pb-2" suppressHydrationWarning>
       <AiHandoffBadge />
-
       <HomeShortFormReels clips={[...reelClips]} />
-
       <RealTimeInfoCards />
-
+      {/* 이제 여기서 드디어 보스의 영상이 나옵니다! */}
       <HomeDestinations catalog={destinationCatalog} />
-
       <HomeYoutubeStrip />
-
       <HomeProductShowcase items={showcaseItems} daysUnit={tHome("daysUnit")} />
-
       <HomeConsultationCta />
       <HomeInsuranceTeaser />
-
       <HomeSosBar />
     </main>
   );
