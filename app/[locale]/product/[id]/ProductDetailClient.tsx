@@ -13,11 +13,15 @@ function parseYouTubeId(input: string): string | null {
       const id = u.pathname.replace("/", "").slice(0, 64);
       return /^[a-zA-Z0-9_-]{11}$/.test(id) ? id : null;
     }
-    if (u.hostname.includes("youtube.com")) {
+    if (u.hostname.includes("youtube.com") || u.hostname === "m.youtube.com") {
       const v = u.searchParams.get("v");
       if (v && /^[a-zA-Z0-9_-]{11}$/.test(v)) return v;
       const m = u.pathname.match(/\/embed\/([a-zA-Z0-9_-]{11})/);
       if (m?.[1]) return m[1];
+      const shorts = u.pathname.match(/\/shorts\/([a-zA-Z0-9_-]{11})/);
+      if (shorts?.[1]) return shorts[1];
+      const live = u.pathname.match(/\/live\/([a-zA-Z0-9_-]{11})/);
+      if (live?.[1]) return live[1];
     }
   } catch {
     // ignore
@@ -73,14 +77,25 @@ export function ProductDetailClient({
   subtitle: string;
 }) {
   const videoId = useMemo(() => (youtubeUrl ? parseYouTubeId(youtubeUrl) : null), [youtubeUrl]);
-  if (!videoId) return null;
+  if (!youtubeUrl) return null;
 
   return (
     <section className="rounded-[1.25rem] border border-boss-accent/20 bg-navy-800/50 p-5 shadow-[0_18px_60px_rgba(0,0,0,0.35)]">
       <h2 className="text-lg font-semibold text-boss-accent">{title}</h2>
       <p className="mt-2 text-sm leading-relaxed text-white/60">{subtitle}</p>
       <div className="mt-4">
-        <YouTubeLite videoId={videoId} title={title} />
+        {videoId ? (
+          <YouTubeLite videoId={videoId} title={title} />
+        ) : (
+          <a
+            href={youtubeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex min-h-14 items-center justify-center rounded-2xl border border-white/[0.12] bg-white/[0.06] px-4 text-base font-semibold text-white/85 transition hover:border-boss-accent/35 hover:bg-white/[0.08]"
+          >
+            YouTube에서 영상 열기
+          </a>
+        )}
       </div>
     </section>
   );
