@@ -26,8 +26,11 @@ export function TopBar() {
       <div className="flex items-start justify-between gap-3">
         <div className="flex min-w-0 flex-1 items-center gap-3">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface-1)] text-boss-accent shadow-sm">
-            <WingMark className="h-7 w-7" />
-          </div>
+          <img 
+          src="/seojin-logo.jpg" 
+          alt="Seojin Logo" 
+    className="h-full w-full object-cover" 
+  />
           <div className="min-w-0">
             <p className="truncate text-[0.62rem] font-semibold uppercase tracking-[0.28em] text-boss-accent/90">{t("brandKicker")}</p>
             <p className="truncate text-lg font-semibold tracking-tight text-[var(--foreground)]">{t("brandName")}</p>
