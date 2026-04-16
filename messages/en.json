@@ -62,6 +62,8 @@
     "ytCard3Title": "Travel inspiration · pick 3",
     "ytOpen": "Open in YouTube",
     "ytOpenSr": "Spotlight video {n} — opens in a new tab",
+    "ytScrollLeftAria": "Scroll curated videos left",
+    "ytScrollRightAria": "Scroll curated videos right",
     "toursEyebrow": "Journeys",
     "toursTitle": "Journeys you’ll want to tap",
     "tourBadge": "Boss Pick",
@@ -104,6 +106,8 @@
     "seoulLabel": "Seoul",
     "localLabel": "Local",
     "clockHint": "Colons pulse with each tick.",
+    "scrollLeftAria": "Scroll real-time cards left",
+    "scrollRightAria": "Scroll real-time cards right",
     "currencyMOP": "MOP",
     "currencyCNY": "CNY"
   },

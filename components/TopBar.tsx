@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { RegionSelector } from "@/components/RegionSelector";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Link } from "@/i18n/navigation";
 
 export function TopBar() {
   const t = useTranslations("Home");
@@ -14,13 +15,19 @@ export function TopBar() {
         <div className="flex min-w-0 flex-1 items-center gap-3">
           
           {/* 📍 로고 상자 시작 */}
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface-1)] overflow-hidden shadow-sm">
-            <img 
-              src="/seojin-logo.jpg" 
-              alt="Seojin Logo" 
-              className="h-full w-full object-cover" 
-            />
-          </div> {/* 📍 여기가 아까 빠졌던 닫는 태그입니다! */}
+          <Link
+            href="/"
+            aria-label={t("brandName")}
+            className="shrink-0 rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-boss-accent/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--surface-0)]"
+          >
+            <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface-1)] shadow-sm">
+              <img
+                src="/seojin-logo.jpg"
+                alt="Seojin Logo"
+                className="h-full w-full object-cover"
+              />
+            </div>
+          </Link>
 
           {/* 📍 브랜드 텍스트 상자 */}
           <div className="min-w-0">

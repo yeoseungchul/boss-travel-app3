@@ -62,6 +62,8 @@
     "ytCard3Title": "旅行灵感 · 精选 3",
     "ytOpen": "在 YouTube 打开",
     "ytOpenSr": "推荐视频 {n} — 新标签页打开",
+    "ytScrollLeftAria": "推荐视频向左滚动",
+    "ytScrollRightAria": "推荐视频向右滚动",
     "toursEyebrow": "行程",
     "toursTitle": "让人想立刻出发的线路",
     "tourBadge": "Boss 精选",
@@ -104,6 +106,8 @@
     "seoulLabel": "首尔",
     "localLabel": "当地",
     "clockHint": "冒号随秒闪烁。",
+    "scrollLeftAria": "实时信息卡片向左滚动",
+    "scrollRightAria": "实时信息卡片向右滚动",
     "currencyMOP": "澳门元",
     "currencyCNY": "人民币"
   },

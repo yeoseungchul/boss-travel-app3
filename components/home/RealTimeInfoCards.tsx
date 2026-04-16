@@ -7,12 +7,14 @@ import { motion } from "framer-motion";
 import {
   CloudRain,
   CloudSun,
+  ChevronLeft,
+  ChevronRight,
   Sun,
   TrendingDown,
   TrendingUp,
 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const container = {
   hidden: { opacity: 0 },
@@ -112,6 +114,7 @@ export function RealTimeInfoCards() {
   const { region } = useHomeRegion();
   const locale = useLocale();
   const [snap, setSnap] = useState<RealtimeMockSnapshot | null>(null);
+  const railRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -138,6 +141,13 @@ export function RealTimeInfoCards() {
   const currencyLabel = snap?.fx.quoteCode === "MOP" ? t("currencyMOP") : t("currencyCNY");
   const trendUp = snap != null && snap.fx.trendPct >= 0;
 
+  function scrollRail(direction: "left" | "right") {
+    const el = railRef.current;
+    if (!el) return;
+    const delta = Math.max(280, Math.round(el.clientWidth * 0.85));
+    el.scrollBy({ left: direction === "left" ? -delta : delta, behavior: "smooth" });
+  }
+
   return (
     <motion.section
       initial={{ opacity: 0, y: 14 }}
@@ -152,13 +162,33 @@ export function RealTimeInfoCards() {
         <h2 className="mt-1 text-xl font-semibold tracking-tight text-[var(--foreground)]">{t("title")}</h2>
       </div>
 
-      <motion.div
-        variants={container}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, margin: "-16px" }}
-        className="flex snap-x snap-mandatory gap-4 overflow-x-auto overflow-y-visible pb-2 pl-0.5 pr-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      >
+      <div className="relative">
+        <button
+          type="button"
+          onClick={() => scrollRail("left")}
+          aria-label={t("scrollLeftAria")}
+          className="absolute left-0 top-1/2 z-20 inline-flex -translate-y-1/2 rounded-full border border-[var(--border-subtle)] bg-[var(--surface-0)]/85 p-2 text-[var(--foreground)] shadow-sm backdrop-blur-md transition hover:bg-[var(--surface-0)] focus:outline-none focus-visible:ring-2 focus-visible:ring-boss-accent/60"
+        >
+          <ChevronLeft className="h-5 w-5" aria-hidden />
+        </button>
+
+        <button
+          type="button"
+          onClick={() => scrollRail("right")}
+          aria-label={t("scrollRightAria")}
+          className="absolute right-0 top-1/2 z-20 inline-flex -translate-y-1/2 rounded-full border border-[var(--border-subtle)] bg-[var(--surface-0)]/85 p-2 text-[var(--foreground)] shadow-sm backdrop-blur-md transition hover:bg-[var(--surface-0)] focus:outline-none focus-visible:ring-2 focus-visible:ring-boss-accent/60"
+        >
+          <ChevronRight className="h-5 w-5" aria-hidden />
+        </button>
+
+        <motion.div
+          ref={railRef}
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-16px" }}
+          className="flex snap-x snap-mandatory gap-4 overflow-x-auto overflow-y-visible pb-2 pl-12 pr-12 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
         {/* Weather */}
         <motion.article variants={cardMotion} className={`${glassCardClass()} w-[min(86vw,18.5rem)] shrink-0 snap-start p-5`}>
           <div className="pointer-events-none absolute -right-6 -top-10 h-28 w-28 rounded-full bg-boss-accent/15 blur-2xl" />
@@ -243,7 +273,8 @@ export function RealTimeInfoCards() {
             <p className="text-[0.62rem] leading-relaxed text-[var(--muted-2)]">{t("clockHint")}</p>
           </div>
         </motion.article>
-      </motion.div>
+        </motion.div>
+      </div>
     </motion.section>
   );
 }

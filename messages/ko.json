@@ -62,6 +62,8 @@
     "ytCard3Title": "여행 영감 · 큐레이션 3",
     "ytOpen": "탭하여 YouTube에서 보기",
     "ytOpenSr": "추천 영상 {n}번 — 새 탭에서 열림",
+    "ytScrollLeftAria": "추천 영상 왼쪽으로 이동",
+    "ytScrollRightAria": "추천 영상 오른쪽으로 이동",
     "toursEyebrow": "Journeys",
     "toursTitle": "지금 떠나고 싶은 일정",
     "tourBadge": "Boss Pick",
@@ -104,6 +106,8 @@
     "seoulLabel": "서울",
     "localLabel": "현지",
     "clockHint": "초 구분 콜론은 실시간으로 깜빡여요.",
+    "scrollLeftAria": "실시간 정보 카드 왼쪽으로 이동",
+    "scrollRightAria": "실시간 정보 카드 오른쪽으로 이동",
     "currencyMOP": "MOP",
     "currencyCNY": "CNY"
   },
